@@ -3,6 +3,10 @@ use actix_web::dev::Server;
 use std::net::TcpListener;
 use serde;
 
+pub mod configuration;
+pub mod routes;
+pub mod startup;
+
 // When Actix Web receives the request, it tries to deserialize the form data
 // into your FormData struct, so if they don't match the framework rejects it
 // before it even reaches your handler function.

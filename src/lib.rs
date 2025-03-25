@@ -8,7 +8,7 @@ use serde;
 // before it even reaches your handler function.
 #[derive(serde::Deserialize)]
 struct FormData {
-    username: String,
+    name: String,
     email: String,
 }
 
@@ -18,6 +18,8 @@ async fn health_check() -> impl Responder {
     HttpResponse::Ok().finish()
 }
 
+// here Form calls Form::from_request to deserialize our request to FormData
+// with serde and if it fails returns a 400 BAD REQUEST
 async fn subscribe(_form: web::Form<FormData>) -> HttpResponse {
     HttpResponse::Ok().finish()
 }

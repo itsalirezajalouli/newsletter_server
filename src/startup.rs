@@ -1,9 +1,9 @@
 use serde;
 use std::net::TcpListener;
 use actix_web::dev::Server;
-use actix_web::{web, App, HttpResponse, HttpServer, Responder};
+use actix_web::{web, App, HttpServer};
 use crate::routes::{health_check, subscribe};
-use sqlx::PgConnection;
+use sqlx::PgPool;
 
 // When Actix Web receives the request, it tries to deserialize the form data
 // into your FormData struct, so if they don't match the framework rejects it
@@ -15,16 +15,16 @@ struct FormData {
 }
 
 pub fn run(listener: TcpListener,
-           connection: PgConnection) -> Result<Server, std::io::Error> {
+           db_pool: PgPool) -> Result<Server, std::io::Error> {
     // HttpServer: handles transport level concerns (listens for requests)
-    let connection = web::Data::new(connection);
+    let db_pool = web::Data::new(db_pool);
     let server = HttpServer::new(move || {            
         // App: All the logic from getting the request to spitting a response
         App::new()
             // we call these endpoints
             .route("/health_check", web::get().to(health_check)) 
             .route("/subscriptions", web::post().to(subscribe)) 
-            .app_data(connection.clone())
+            .app_data(db_pool.clone())
     })
     .listen(listener)?
     .run();

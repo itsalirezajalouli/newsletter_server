@@ -18,7 +18,7 @@ config = "0.15.11"
 reqwest = "0.12.15"
 serde = { version = "1.0.219", features = ["derive"] }
 tokio = { version = "1.44.1", features = ["macros", "rt-multi-thread"] }
-uuid = "1.16.0"
+uuid = { version = "0.8.1", features = ["v4"] }
 
 # Using table-like toml syntax to avoid a super-long line!
 [dependencies.sqlx]
